@@ -1,0 +1,28 @@
+.Card {
+    border: 1px solid black;
+    display: inline-flex;
+    flex-direction: column;
+    box-shadow: 3px 3px 5px 6px #ccc;
+    padding: 8px;
+    margin: 8px;
+    width: 16vw;
+    text-align: center;
+}
+
+.CardInner {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.AvatarImage {
+    width: 50%;
+}
+
+.CardName {
+    margin: 0;
+}
+
+.OrderList {
+    min-width: 80px;
+    position: relative;
+}

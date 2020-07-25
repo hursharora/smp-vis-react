@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import PersonCard from "./components/PersonCard/PersonCard";
+import CardRow from "./components/CardRow/CardRow";
 
 const App = () => {
     const data = [];
@@ -12,13 +13,13 @@ const App = () => {
     }
 
     return (
-        <div>
+        <CardRow>
             <PersonCard data={data} number={1} />
-            <PersonCard data={data} number={1} />
-            <PersonCard data={data} number={1} />
-            <PersonCard data={data} number={1} />
-            <PersonCard data={data} number={1} />
-        </div>
+            <PersonCard data={data} number={2} />
+            <PersonCard data={data} number={3} />
+            <PersonCard data={data} number={4} />
+            <PersonCard data={data} number={5} />
+        </CardRow>
     );
 };
 

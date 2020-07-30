@@ -1,7 +1,9 @@
-import React, { useReducer } from "react";
-import "./App.css";
-import PersonCard from "./components/PersonCard/PersonCard";
+import React, { useReducer, useState } from "react";
+import classes from "./App.module.css";
 import CardRow from "./components/CardRow/CardRow";
+
+//major bug, component not updating because i was using the index as the key in a map function,
+//use force update...
 
 const initPreferences = () => {
     const initPreferences = [];
@@ -15,12 +17,33 @@ const initPreferences = () => {
     return initPreferences;
 };
 
+//shuffleArray (credit: ashleedawg and Laurens Holst on stackoverflow)
+const shuffleArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+};
+
+const randomizePreferences = () => {
+    const preferences = [];
+    for (let i = 0; i < 10; i++) {
+        let curr = [];
+        for (let j = 0; j < 5; j++) {
+            curr.push(j);
+        }
+        preferences.push(shuffleArray(curr));
+    }
+    return preferences;
+};
+
 const preferenceReducer = (currentIngredients, action) => {
     switch (action.type) {
         case "SET":
             return action.ingredients;
         case "RANDOMIZE":
-            return [...currentIngredients, action.ingredient];
+            return randomizePreferences();
         case "RESET":
             return initPreferences();
         default:
@@ -32,14 +55,23 @@ const App = () => {
     const [preferenceData, dispatch] = useReducer(
         preferenceReducer,
         [],
-        initPreferences
+        randomizePreferences
     );
 
     return (
-        <>
-            <CardRow prefData={preferenceData.slice(0, 5)} />
-            <CardRow prefData={preferenceData.slice(5, 10)} />
-        </>
+        <div className={classes.App}>
+            <CardRow prefData={preferenceData.slice(0, 5)} color={"blue"} />
+            <div>
+                {/*Temporary solution to randomization, not working by passing new data*/}
+                {/*<button onClick={() => window.location.reload(false)}>*/}
+                {/*    Randomize*/}
+                {/*</button>*/}
+                <button onClick={() => dispatch({ type: "RANDOMIZE" })}>
+                    Randomize Preferences
+                </button>
+            </div>
+            <CardRow prefData={preferenceData.slice(5, 10)} color={"red"} />
+        </div>
     );
 };
 

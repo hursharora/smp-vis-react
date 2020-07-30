@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer } from "react";
 import classes from "./App.module.css";
 import CardRow from "./components/CardRow/CardRow";
 
@@ -40,8 +40,6 @@ const randomizePreferences = () => {
 
 const preferenceReducer = (currentIngredients, action) => {
     switch (action.type) {
-        case "SET":
-            return action.ingredients;
         case "RANDOMIZE":
             return randomizePreferences();
         case "RESET":

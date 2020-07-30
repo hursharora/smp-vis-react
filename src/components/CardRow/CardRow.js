@@ -14,7 +14,7 @@ const CardRow = props => {
                 return (
                     <PersonCard
                         data={curr}
-                        key={Math.random()}
+                        key={ind}
                         number={ind + 1}
                         color={props.color}
                     />

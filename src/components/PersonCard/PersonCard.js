@@ -9,8 +9,12 @@ const PersonCard = props => {
         [props.color]
     );
 
+    let cardClasses = [classes.Card];
+    if (props.color === "red") cardClasses.push(classes.CardRed);
+    else cardClasses.push(classes.CardBlue);
+
     return (
-        <div className={classes.Card}>
+        <div className={cardClasses.join(" ")}>
             <h3 className={classes.CardName}>Person {props.number}</h3>
             <div className={classes.CardInner}>
                 <div className={classes.AvatarImage}>{avatar}</div>

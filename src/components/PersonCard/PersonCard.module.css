@@ -9,6 +9,14 @@
     text-align: center;
 }
 
+.CardRed {
+    background: linear-gradient(#d06963, #884545);
+}
+
+.CardBlue {
+    background: linear-gradient(#7870b3, lightblue);
+}
+
 .CardInner {
     display: flex;
     justify-content: space-evenly;

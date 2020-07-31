@@ -60,12 +60,11 @@ const App = () => {
         <div className={classes.App}>
             <CardRow prefData={preferenceData.slice(0, 5)} color={"blue"} />
             <div>
-                {/*Temporary solution to randomization, not working by passing new data*/}
-                {/*<button onClick={() => window.location.reload(false)}>*/}
-                {/*    Randomize*/}
-                {/*</button>*/}
                 <button onClick={() => dispatch({ type: "RANDOMIZE" })}>
                     Randomize Preferences
+                </button>
+                <button onClick={() => dispatch({ type: "RESET" })}>
+                    Worst Case Preferences
                 </button>
             </div>
             <CardRow prefData={preferenceData.slice(5, 10)} color={"red"} />

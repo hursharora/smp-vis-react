@@ -19,8 +19,13 @@ const PersonCard = props => {
             <div className={classes.CardInner}>
                 <div className={classes.AvatarImage}>{avatar}</div>
                 <div className={classes.OrderList}>
-                    {/*Super hacky, but forces update of preference list since deep props change is made.*/}
-                    <PreferenceList data={props.data} key={Math.random()} />
+                    {/*Super hacky (key), but forces update of preference list since deep props change is made.*/}
+                    <PreferenceList
+                        id={props.id}
+                        data={props.data}
+                        key={Math.random()}
+                        update={props.update}
+                    />
                 </div>
             </div>
         </div>

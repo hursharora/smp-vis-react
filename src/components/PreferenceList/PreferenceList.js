@@ -5,7 +5,12 @@ import ListDragDrop from "@bit/cy-shan.fancy-data-manipulators.list-drag-drop";
 const PreferenceList = props => {
     return (
         <>
-            <ListDragDrop items={props.data} itemHeight={30} tapDelay={100}>
+            <ListDragDrop
+                items={props.data}
+                itemHeight={30}
+                tapDelay={100}
+                onReorder={obj => props.update(obj, props.id)}
+            >
                 <TempItem />
             </ListDragDrop>
         </>

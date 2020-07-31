@@ -5,18 +5,20 @@ import PersonCard from "../PersonCard/PersonCard";
 const CardRow = props => {
     return (
         <div className={classes.CardRow}>
-            {props.prefData.map((el, ind) => {
-                let curr = el.map((rank, idx) => ({
-                    id: idx,
+            {props.prefData.map((el, idx) => {
+                let curr = el.map(rank => ({
+                    id: rank,
                     name: "Person " + (rank + 1)
                 }));
 
                 return (
                     <PersonCard
                         data={curr}
-                        key={ind}
-                        number={ind + 1}
+                        id={props.top ? idx : idx + 5}
+                        key={idx}
+                        number={idx + 1}
                         color={props.color}
+                        update={props.update}
                     />
                 );
             })}

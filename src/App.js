@@ -38,8 +38,12 @@ const randomizePreferences = () => {
     return preferences;
 };
 
-const preferenceReducer = (currentIngredients, action) => {
+const preferenceReducer = (preferencesState, action) => {
     switch (action.type) {
+        case "UPDATE":
+            let newPreferences = [...preferencesState];
+            newPreferences[action.id] = action.updated;
+            return newPreferences;
         case "RANDOMIZE":
             return randomizePreferences();
         case "RESET":
@@ -50,15 +54,29 @@ const preferenceReducer = (currentIngredients, action) => {
 };
 
 const App = () => {
+    console.log("RENDERING APP");
     const [preferenceData, dispatch] = useReducer(
         preferenceReducer,
         [],
         randomizePreferences
     );
 
+    const updatePreferenceHandler = (updatedPreferencesObject, id) => {
+        let updatedPreferences = [];
+        for (let i = 0; i < 5; i++) {
+            updatedPreferences.push(updatedPreferencesObject[i]["id"]);
+        }
+        dispatch({ type: "UPDATE", id: id, updated: updatedPreferences });
+    };
+
     return (
         <div className={classes.App}>
-            <CardRow prefData={preferenceData.slice(0, 5)} color={"blue"} />
+            <CardRow
+                prefData={preferenceData.slice(0, 5)}
+                color={"blue"}
+                update={updatePreferenceHandler}
+                top
+            />
             <div>
                 <button onClick={() => dispatch({ type: "RANDOMIZE" })}>
                     Randomize Preferences
@@ -67,7 +85,11 @@ const App = () => {
                     Worst Case Preferences
                 </button>
             </div>
-            <CardRow prefData={preferenceData.slice(5, 10)} color={"red"} />
+            <CardRow
+                prefData={preferenceData.slice(5, 10)}
+                color={"red"}
+                update={updatePreferenceHandler}
+            />
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import classes from "./App.module.css";
 import CardRow from "./components/CardRow/CardRow";
 import LineTo from "react-lineto";
@@ -62,6 +62,20 @@ const App = () => {
         randomizePreferences
     );
 
+    const [dimensions, setDimensions] = useState([
+        window.innerWidth,
+        window.innerHeight
+    ]);
+
+    //state representing lines from index -> value
+    const [lines, setLines] = useState([9, -1, -1, -1, -1]);
+
+    useEffect(() => {
+        window.addEventListener("resize", () => {
+            setDimensions([window.innerWidth, window.innerHeight]);
+        });
+    }, []);
+
     const updatePreferenceHandler = (updatedPreferencesObject, id) => {
         let updatedPreferences = [];
         for (let i = 0; i < 5; i++) {
@@ -69,6 +83,22 @@ const App = () => {
         }
         dispatch({ type: "UPDATE", id: id, updated: updatedPreferences });
     };
+
+    let drawLines = [];
+    lines.forEach((el, idx) => {
+        if (el !== -1) {
+            drawLines.push(
+                <LineTo
+                    from={idx}
+                    to={el}
+                    delay
+                    zIndex={-1}
+                    fromAnchor="bottom center"
+                    toAnchor="top center"
+                />
+            );
+        }
+    });
 
     return (
         <>
@@ -93,22 +123,7 @@ const App = () => {
                     update={updatePreferenceHandler}
                 />
             </div>
-            <LineTo
-                from="1"
-                to="5"
-                delay
-                zIndex={-1}
-                fromAnchor="bottom center"
-                toAnchor="top center"
-            />
-            <LineTo
-                from="0"
-                to="9"
-                delay
-                zIndex={-1}
-                fromAnchor="bottom center"
-                toAnchor="top center"
-            />
+            {drawLines}
         </>
     );
 };

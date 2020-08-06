@@ -62,11 +62,6 @@ const App = () => {
         randomizePreferences
     );
 
-    const cardRefs = useRef([]);
-    useEffect(() => {
-        cardRefs.current = cardRefs.current.slice(0, 10);
-    }, []);
-
     const updatePreferenceHandler = (updatedPreferencesObject, id) => {
         let updatedPreferences = [];
         for (let i = 0; i < 5; i++) {
@@ -83,7 +78,6 @@ const App = () => {
                     color={"blue"}
                     update={updatePreferenceHandler}
                     top
-                    setRefs={cardRefs}
                 />
                 <div>
                     <button onClick={() => dispatch({ type: "RANDOMIZE" })}>
@@ -97,13 +91,24 @@ const App = () => {
                     prefData={preferenceData.slice(5, 10)}
                     color={"red"}
                     update={updatePreferenceHandler}
-                    setRefs={cardRefs}
                 />
             </div>
-            <LineTo from="1" to="5" delay zIndex={-1} />
-            <LineTo from="0" to="9" delay zIndex={-1} />
-            <LineTo from="2" to="6" delay zIndex={-1} />
-            <LineTo from="3" to="7" delay zIndex={-1} />
+            <LineTo
+                from="1"
+                to="5"
+                delay
+                zIndex={-1}
+                fromAnchor="bottom center"
+                toAnchor="top center"
+            />
+            <LineTo
+                from="0"
+                to="9"
+                delay
+                zIndex={-1}
+                fromAnchor="bottom center"
+                toAnchor="top center"
+            />
         </>
     );
 };

@@ -13,18 +13,14 @@ const CardRow = props => {
 
                 let currId = props.top ? idx : idx + 5;
                 return (
-                    <div
-                        ref={el => (props.setRefs.current[currId] = el)}
+                    <PersonCard
+                        data={curr}
+                        id={currId}
                         key={idx}
-                    >
-                        <PersonCard
-                            data={curr}
-                            id={currId}
-                            number={idx + 1}
-                            color={props.color}
-                            update={props.update}
-                        />
-                    </div>
+                        number={idx + 1}
+                        color={props.color}
+                        update={props.update}
+                    />
                 );
             })}
         </div>

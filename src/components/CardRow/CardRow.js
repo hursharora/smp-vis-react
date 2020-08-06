@@ -11,15 +11,20 @@ const CardRow = props => {
                     name: "Person " + (rank + 1)
                 }));
 
+                let currId = props.top ? idx : idx + 5;
                 return (
-                    <PersonCard
-                        data={curr}
-                        id={props.top ? idx : idx + 5}
+                    <div
+                        ref={el => (props.setRefs.current[currId] = el)}
                         key={idx}
-                        number={idx + 1}
-                        color={props.color}
-                        update={props.update}
-                    />
+                    >
+                        <PersonCard
+                            data={curr}
+                            id={currId}
+                            number={idx + 1}
+                            color={props.color}
+                            update={props.update}
+                        />
+                    </div>
                 );
             })}
         </div>

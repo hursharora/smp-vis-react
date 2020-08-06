@@ -9,7 +9,7 @@ const PersonCard = props => {
         [props.color]
     );
 
-    let cardClasses = [classes.Card];
+    let cardClasses = [classes.Card, props.id];
     if (props.color === "red") cardClasses.push(classes.CardRed);
     else cardClasses.push(classes.CardBlue);
 

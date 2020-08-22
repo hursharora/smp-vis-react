@@ -55,7 +55,7 @@ const preferenceReducer = (preferencesState, action) => {
 };
 
 const App = () => {
-    console.log("RENDERING APP");
+    //console.log("RENDERING APP");
     const [preferenceData, dispatch] = useReducer(
         preferenceReducer,
         [],
@@ -69,7 +69,7 @@ const App = () => {
     ]);
 
     //state representing lines from index -> value
-    const [lines, setLines] = useState([-1, -1, -1, -1, -1]);
+    const [lines, setLines] = useState([null, null, null, null, null]);
 
     useEffect(() => {
         window.addEventListener("resize", () => {
@@ -102,20 +102,37 @@ const App = () => {
     };
 
     const visualize = matching => {
+        let n = matching.length();
+        let currCons;
+        for (let i = 0; i < n; i++) {
+            let curr = matching[i];
+            if (curr.length < 4) break;
+            switch (curr[2]) {
+                case "l":
+                    setTimeout();
+                    currCons = curr[6];
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
-    }
+    const makeDashedLine = () => {};
 
     let drawLines = [];
     lines.forEach((el, idx) => {
-        if (el !== -1) {
+        if (el) {
             drawLines.push(
                 <LineTo
-                    from={idx}
-                    to={el}
+                    from={idx.toString()}
+                    to={Math.abs(el).toString()}
                     delay
                     zIndex={-1}
                     fromAnchor="bottom center"
                     toAnchor="top center"
+                    key={idx}
+                    borderStyle={el < 0 ? "dashed" : "solid"}
                 />
             );
         }

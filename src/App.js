@@ -62,13 +62,14 @@ const App = () => {
         randomizePreferences
     );
 
+    //state so component updates when window dimensions are updated.
     const [dimensions, setDimensions] = useState([
         window.innerWidth,
         window.innerHeight
     ]);
 
     //state representing lines from index -> value
-    const [lines, setLines] = useState([9, -1, -1, -1, -1]);
+    const [lines, setLines] = useState([-1, -1, -1, -1, -1]);
 
     useEffect(() => {
         window.addEventListener("resize", () => {
@@ -83,6 +84,26 @@ const App = () => {
         }
         dispatch({ type: "UPDATE", id: id, updated: updatedPreferences });
     };
+
+    const getMatching = () => {
+        //send request to server and get response
+        //parse response array and update lines accordingly
+        let requestPreferences = [...preferenceData];
+        requestPreferences.unshift(5);
+        // console.log(JSON.stringify(requestPreferences));
+        fetch("http://localhost:8080/smp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestPreferences)
+        })
+            .then(r => r.json())
+            .then(r => console.log(r))
+            .catch(e => console.log(e));
+    };
+
+    const visualize = matching => {
+
+    }
 
     let drawLines = [];
     lines.forEach((el, idx) => {
@@ -116,6 +137,7 @@ const App = () => {
                     <button onClick={() => dispatch({ type: "RESET" })}>
                         Worst Case Preferences
                     </button>
+                    <button onClick={() => getMatching()}>Visualize!</button>
                 </div>
                 <CardRow
                     prefData={preferenceData.slice(5, 10)}

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 import classes from "./App.module.css";
 import CardRow from "./components/CardRow/CardRow";
 import LineTo from "react-lineto";
@@ -110,11 +110,12 @@ const App = () => {
             .catch(e => console.log(e));
     };
 
+    //main visualization function
     const visualize = (matching, idx, confirm, newLines) => {
         //console.log("Running visualize at" + idx);
         // console.log("Next");
         let nextLines = [...newLines];
-        console.log(nextLines);
+        //console.log(nextLines);
         let curr = matching[idx];
 
         //"X Y"
@@ -129,16 +130,15 @@ const App = () => {
             console.log(nextLines);
         } else {
             if (curr[2] === "C") {
-                console.log("ACCEPTED");
-
+                //console.log("ACCEPTED");
                 nextLines[confirm] = nextLines[confirm] * -1;
             } else if (curr[2] === "J") {
                 //"REJECTED"
-                console.log("REJECTED");
+                //console.log("REJECTED");
                 nextLines[confirm] = null;
             } else {
                 //"REPLACED"
-                console.log("REPLACED");
+                //console.log("REPLACED");
                 let toReplace = nextLines[confirm] * -1;
                 nextLines = nextLines.map(el => {
                     if (el === toReplace) return null;
@@ -169,15 +169,34 @@ const App = () => {
         }
     });
 
+    //using useMemo instead of reactMemo in CardRow because slice returns a new array
+    //wanted to keep all preferences in a single state to make requests to backend easy
+    let topRow = useMemo(
+        () => (
+            <CardRow
+                prefData={preferenceData.slice(0, 5)}
+                color={"blue"}
+                update={updatePreferenceHandler}
+                top
+            />
+        ),
+        [preferenceData]
+    );
+
+    let bottomRow = useMemo(
+        () => (
+            <CardRow
+                prefData={preferenceData.slice(5, 10)}
+                color={"red"}
+                update={updatePreferenceHandler}
+            />
+        ),
+        [preferenceData]
+    );
     return (
         <>
             <div className={classes.App}>
-                <CardRow
-                    prefData={preferenceData.slice(0, 5)}
-                    color={"blue"}
-                    update={updatePreferenceHandler}
-                    top
-                />
+                {topRow}
                 <div>
                     <button onClick={() => dispatch({ type: "RANDOMIZE" })}>
                         Randomize Preferences
@@ -186,15 +205,9 @@ const App = () => {
                         Worst Case Preferences
                     </button>
                     <button onClick={() => getMatching()}>Visualize!</button>
-                    <button onClick={() => clearMatching()}>
-                        Clear Matching
-                    </button>
+                    <button onClick={() => clearMatching()}>Clear Lines</button>
                 </div>
-                <CardRow
-                    prefData={preferenceData.slice(5, 10)}
-                    color={"red"}
-                    update={updatePreferenceHandler}
-                />
+                {bottomRow}
             </div>
             {drawLines}
         </>

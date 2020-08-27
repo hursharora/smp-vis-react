@@ -85,7 +85,13 @@ const App = () => {
         dispatch({ type: "UPDATE", id: id, updated: updatedPreferences });
     };
 
+    const clearMatching = () => {
+        setLines([null, null, null, null, null]);
+    };
+
     const getMatching = () => {
+        clearMatching();
+
         //send request to server and get response
         //parse response array and update lines accordingly
         let requestPreferences = [...preferenceData];
@@ -97,28 +103,53 @@ const App = () => {
             body: JSON.stringify(requestPreferences)
         })
             .then(r => r.json())
-            .then(r => console.log(r))
+            .then(r => {
+                console.log(r);
+                visualize(r, 0, null, [...lines]);
+            })
             .catch(e => console.log(e));
     };
 
-    const visualize = matching => {
-        let n = matching.length();
-        let currCons;
-        for (let i = 0; i < n; i++) {
-            let curr = matching[i];
-            if (curr.length < 4) break;
-            switch (curr[2]) {
-                case "l":
-                    setTimeout();
-                    currCons = curr[6];
-                    break;
-                default:
-                    break;
+    const visualize = (matching, idx, confirm, newLines) => {
+        //console.log("Running visualize at" + idx);
+        // console.log("Next");
+        let nextLines = [...newLines];
+        console.log(nextLines);
+        let curr = matching[idx];
+
+        //"X Y"
+        if (curr[1] === " ") return;
+
+        //"Male: X Considering Female: Y"
+        let source, dest;
+        if (curr[0] === "M") {
+            source = parseInt(curr[6]);
+            dest = parseInt(curr[28]) + 5;
+            nextLines[source] = dest * -1;
+            console.log(nextLines);
+        } else {
+            if (curr[2] === "C") {
+                console.log("ACCEPTED");
+
+                nextLines[confirm] = nextLines[confirm] * -1;
+            } else if (curr[2] === "J") {
+                //"REJECTED"
+                console.log("REJECTED");
+                nextLines[confirm] = null;
+            } else {
+                //"REPLACED"
+                console.log("REPLACED");
+                let toReplace = nextLines[confirm] * -1;
+                nextLines = nextLines.map(el => {
+                    if (el === toReplace) return null;
+                    return el;
+                });
+                nextLines[confirm] = toReplace;
             }
         }
+        setLines(nextLines);
+        setTimeout(() => visualize(matching, idx + 1, source, nextLines), 1000);
     };
-
-    const makeDashedLine = () => {};
 
     let drawLines = [];
     lines.forEach((el, idx) => {
@@ -155,6 +186,9 @@ const App = () => {
                         Worst Case Preferences
                     </button>
                     <button onClick={() => getMatching()}>Visualize!</button>
+                    <button onClick={() => clearMatching()}>
+                        Clear Matching
+                    </button>
                 </div>
                 <CardRow
                     prefData={preferenceData.slice(5, 10)}

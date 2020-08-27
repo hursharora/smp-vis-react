@@ -90,10 +90,9 @@ const App = () => {
     };
 
     const getMatching = () => {
-        clearMatching();
-
         //send request to server and get response
         //parse response array and update lines accordingly
+        let emptyLines = [null, null, null, null, null];
         let requestPreferences = [...preferenceData];
         requestPreferences.unshift(5);
         // console.log(JSON.stringify(requestPreferences));
@@ -105,7 +104,8 @@ const App = () => {
             .then(r => r.json())
             .then(r => {
                 console.log(r);
-                visualize(r, 0, null, [...lines]);
+                setLines(emptyLines);
+                visualize(r, 0, null, emptyLines);
             })
             .catch(e => console.log(e));
     };
